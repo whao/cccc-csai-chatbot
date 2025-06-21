@@ -12,11 +12,13 @@ A ChatGPT-like clone built with Streamlit and OpenAI's API, using UV for fast Py
 
 ## Prerequisites
 
-- Python 3.13+
-- [UV](https://docs.astral.sh/uv/) package manager
+- Python 3.13+ OR Docker
+- [UV](https://docs.astral.sh/uv/) package manager (for local development)
 - OpenAI API key
 
 ## Installation
+
+### Option 1: Local Development with UV
 
 1. **Clone the repository**
 
@@ -39,7 +41,32 @@ A ChatGPT-like clone built with Streamlit and OpenAI's API, using UV for fast Py
    OPENAI_API_KEY = "your-openai-api-key-here"
    ```
 
+### Option 2: Docker Deployment
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd cccc-csai-chatbot
+   ```
+
+2. **Set up your OpenAI API key**
+   
+   Create a `.streamlit/secrets.toml` file:
+
+   ```toml
+   OPENAI_API_KEY = "your-openai-api-key-here"
+   ```
+
+3. **Run with Docker Compose**
+
+   ```bash
+   docker-compose -f docker-compose.dev.yml up --build
+   ```
+
 ## Usage
+
+### Local Development
 
 1. **Start the application**
 
@@ -51,6 +78,19 @@ A ChatGPT-like clone built with Streamlit and OpenAI's API, using UV for fast Py
    
    Navigate to `http://localhost:8501`
 
+### Docker Deployment
+
+1. **Application should already be running** (if you used docker-compose)
+   
+   Navigate to `http://localhost:8501`
+
+2. **Or run manually with Docker**
+
+   ```bash
+   docker build -t cccc-csai-chatbot .
+   docker run -p 8501:8501 -v $(pwd)/.streamlit:/app/.streamlit cccc-csai-chatbot
+   ```
+
 3. **Start chatting!**
    
    Type your message in the chat input and press Enter to start a conversation with the AI.
@@ -59,13 +99,15 @@ A ChatGPT-like clone built with Streamlit and OpenAI's API, using UV for fast Py
 
 ```text
 cccc-csai-chatbot/
-├── app.py                 # Main Streamlit application
-├── pyproject.toml         # Project dependencies and metadata
-├── uv.lock               # Locked dependency versions
+├── app.py                    # Main Streamlit application
+├── pyproject.toml            # Project dependencies and metadata
+├── uv.lock                   # Locked dependency versions
+├── Dockerfile                # Docker container configuration
+├── docker-compose.dev.yml    # Docker Compose for development
 ├── .streamlit/
-│   └── secrets.toml      # OpenAI API key (not tracked)
-├── .gitignore            # Git ignore rules
-└── README.md             # This file
+│   └── secrets.toml          # OpenAI API key (not tracked)
+├── .gitignore                # Git ignore rules
+└── README.md                 # This file
 ```
 
 ## Configuration
@@ -76,6 +118,21 @@ The chatbot uses GPT-4o-mini by default. You can modify the model in `app.py` by
 
 - **streamlit**: Web framework for the chat interface
 - **openai**: Official OpenAI Python client for API integration
+
+## Docker
+
+This project includes Docker support for easy deployment:
+
+- **Dockerfile**: Uses the official UV Python 3.13 Alpine image for lightweight containers
+- **docker-compose.dev.yml**: Development configuration with volume mounting for secrets
+- **Volume Mounting**: The `.streamlit` directory is mounted to persist configuration
+
+### Docker Benefits
+
+- 🐳 **Containerized Deployment**: Consistent environment across different systems
+- ⚡ **Fast Builds**: Leverages UV for rapid dependency installation
+- 🔧 **Development Mode**: Volume mounting for easy configuration updates
+- 🚀 **Production Ready**: Alpine-based image for minimal footprint
 
 ## Development
 
