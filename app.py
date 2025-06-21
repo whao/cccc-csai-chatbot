@@ -1,10 +1,16 @@
 from openai import OpenAI
 import streamlit as st
+import os
 
 st.title("ChatGPT-like clone")
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+# Read the OpenAI API key from Streamlit secrets or environment variable
+if "OPENAI_API_KEY" in st.secrets:
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+elif "OPENAI_API_KEY" in os.environ:
+    openai_api_key = os.environ["OPENAI_API_KEY"]
 
+client = OpenAI(api_key=openai_api_key)
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4o-mini"
 
